@@ -1,34 +1,29 @@
 package oo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class polyy {
-    public static void print_one(int coeff, int index) {
-        if (coeff == 0) {
-            System.out.print("0");
-            return;
-        }
-        if (index == 0) {
-            System.out.print(coeff);
-            return;
-        }
-        if (coeff != 0 && index != 0) {
-            System.out.print(coeff + "*x^" + index);
-            return;
-        }
-        if (coeff == 1 && index != 1) {
-            System.out.print("x^" + index);
-            return;
-        }
-        if (coeff == 1 && index == 1) {
-            System.out.print("x");
-            return;
-        }
-        if (coeff != 1 && index == 1) {
-            System.out.print(coeff + "*x");
-            return;
+public class Polyy {
+    public void console(List<Nape> t,int isFirst)
+    {
+        int i;
+        int isfirst = isFirst;
+        for (i = 0; i < t.size(); i++) {
+            if (t.size() > 1) {
+                if (isfirst == 0) {
+                    isfirst = print(t.get(i).get_coeff(),
+                            t.get(i).get_index(), 0);
+                } else {
+                    isfirst = print(t.get(i).get_coeff(),
+                            t.get(i).get_index(), 1);
+                }
+            } else if (t.size() == 1) {
+                //print_one(t.get(i).get_coeff(), t.get(i).get_index());
+                print(t.get(i).get_coeff(),
+                        t.get(i).get_index(), 0);
+            }
         }
     }
 
@@ -71,7 +66,6 @@ public class polyy {
                 System.out.print(sign + coeff);
                 return 1;
             }
-
             if (coeff == 1 && index != 1) {
                 System.out.print(sign + "x^" + index);
                 return 1;
@@ -91,8 +85,137 @@ public class polyy {
         }
         return 111;
     }
-//2x+3-1+6x^2+123+2x
-    public static List<nape> combine(List<nape> napes) {
+
+    public static int adjust_illegal(int k,int haveSpace,String init)
+    {
+        if (Character.isDigit(init.charAt(k)) && haveSpace == 1) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static int cond1(String init,int i)
+    {
+        int k;
+        int illegal;
+        int haveSpace;
+        if (Character.isDigit(init.charAt(i)) && i + 1 < init.length()) {
+            k = i + 1;
+            haveSpace = 0;
+            while (init.charAt(k) == ' ' || init.charAt(k) == '\t') {
+                haveSpace = 1;
+                k++;
+                if (k >= init.length()) {
+                    break;
+                }
+            }
+            if (k >= init.length()) {
+                return 0;
+            }
+            if ((illegal = adjust_illegal(k,haveSpace,init)) == 1) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    public  static int cond2(String init,int i)
+    {
+        int j;
+        int k;
+        int haveSpace;
+        int illegal;
+        if ((init.charAt(i) == '+' || init.charAt(i) == '-')
+                && i + 1 < init.length()) {
+            j = i + 1;
+            while (init.charAt(j) == ' ' || init.charAt(j) == '\t') {
+                j++;
+                if (j >= init.length()) {
+                    break;
+                }
+            }
+            if ((init.charAt(j) == '+' || init.charAt(j) == '-')) {
+                haveSpace = 0;
+                k = j + 1;
+                if (k >= init.length()) {
+                    return 0;
+                }
+                while (init.charAt(k) == ' ' || init.charAt(k) == '\t') {
+                    haveSpace = 1;
+                    k++;
+                    if (k >= init.length()) {
+                        break;
+                    }
+                }
+                if (k >= init.length()) {
+                    return 0;
+                }
+                if ((illegal = adjust_illegal(k,haveSpace,init)) == 1) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static int cond3(String init,int i)
+    {
+        int j;
+        int k;
+        int illegal;
+        int haveSpace;
+        if ((init.charAt(i) == '^') && i + 1 < init.length()) {
+            j = i + 1;
+            while (init.charAt(j) == ' ' || init.charAt(j) == '\t') {
+                j++;
+                if (j >= init.length()) {
+                    break;
+                }
+            }
+            if (init.charAt(j) == '+' || init.charAt(j) == '-') {
+                haveSpace = 0;
+                k = j + 1;
+                if (k >= init.length()) {
+                    return 0;
+                }
+                while (init.charAt(k) == ' ' || init.charAt(k) == '\t') {
+                    haveSpace = 1;
+                    k++;
+                    if (k >= init.length()) {
+                        break;
+                    }
+                }
+                //haveSpace = adjust_space(k,init)
+                if (k >= init.length()) {
+                    return 0;
+                }
+                if ((illegal = adjust_illegal(k,haveSpace,init)) == 1) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public int check_illegal(String init) {
+        int illegal = 0;
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int haveSpace = 0;
+        for (i = 0; i < init.length(); i++) {
+            char ch = init.charAt(i);
+            //condition1
+            illegal = cond1(init,i) | cond2(init,i) | cond3(init,i);
+            if (illegal == 1)
+            {
+                break;
+            }
+        }
+        return illegal;
+    }
+
+    public static List<Nape> combine(List<Nape> napes) {
         HashMap find = new HashMap();
         HashMap pos = new HashMap();
         int i;
@@ -101,11 +224,13 @@ public class polyy {
                 find.put(napes.get(i).get_index(),1);
                 pos.put(napes.get(i).get_index(),i);
             } else {
-                int before_pos = Integer.parseInt(pos.get(napes.get(i).get_index()).toString());
-                nape temp = new nape(napes.get(before_pos).get_coeff() + napes.get(i).get_coeff(),
+                int beforePos = Integer.parseInt(pos.get(napes.get(i)
+                        .get_index()).toString());
+                Nape temp = new Nape(napes.get(beforePos).get_coeff()
+                        + napes.get(i).get_coeff(),
                         napes.get(i).get_index());
                 napes.remove(i);
-                napes.set(before_pos, temp);
+                napes.set(beforePos, temp);
                 i--;
             }
         }
@@ -113,103 +238,17 @@ public class polyy {
     }
 
     public static void main(String[] args) {
-        int i, illegal = 0, have_space = 0, j, k;
+        int i;
+        int illegal = 0;
         Scanner in = new Scanner(System.in);
         String init = in.nextLine();
+        Polyy ploy = new Polyy();
         if (init.length() == 0) {
             System.out.print("WRONG FORMAT!");
             return;
         }
-        for (i = 0; i < init.length(); i++) {
-            //3 2
-            char ch = init.charAt(i);
-            if (Character.isDigit(init.charAt(i))) {
-                k = i;
-                k++;
-                have_space = 0;
-                if (k >= init.length()) {
-                    break;
-                }
-                while (init.charAt(k) == ' ' || init.charAt(k) == '\t') {
-                    have_space = 1;
-                    k++;
-                    if (k >= init.length()) {
-                        break;
-                    }
-                }
-                if (k >= init.length()) {
-                    break;
-                }
-                if (Character.isDigit(init.charAt(k)) && have_space == 1) {
-                    illegal = 1;
-                    break;
-                }
-            }
-            //++ 3
-            //x^+ 2
-            if ((init.charAt(i) == '+' || init.charAt(i) == '-') && i + 1 < init.length()) {
-                j = i + 1;
-                while (init.charAt(j) == ' ' || init.charAt(j) == '\t') {
-                    j++;
-                    if (j >= init.length()) {
-                        break;
-                    }
-                }
-                if ((init.charAt(j) == '+' || init.charAt(j) == '-')) {
-                    have_space = 0;
-                    k = j + 1;
-                    if (k >= init.length()) {
-                        break;
-                    }
-                    while (init.charAt(k) == ' ' || init.charAt(k) == '\t') {
-                        have_space = 1;
-                        k++;
-                        if (k >= init.length()) {
-                            break;
-                        }
-                    }
-                    if (k >= init.length()) {
-                        break;
-                    }
-                    if (Character.isDigit(init.charAt(k)) && have_space == 1) {
-                        illegal = 1;
-                        break;
-                    }
-                }
-            }
-            //^  +3
-            if ((init.charAt(i) == '^') && i + 1 < init.length()) {
-                j = i + 1;
-                while (init.charAt(j) == ' ' || init.charAt(j) == '\t') {
-                    j++;
-                    if (j >= init.length()) {
-                        break;
-                    }
-                }
-                if (init.charAt(j) == '+' || init.charAt(j) == '-') {
-                    have_space = 0;
-                    k = j + 1;
-                    if (k >= init.length()) {
-                        break;
-                    }
-                    while (init.charAt(k) == ' ' || init.charAt(k) == '\t') {
-                        have_space = 1;
-                        k++;
-                        if (k >= init.length()) {
-                            break;
-                        }
-                    }
-                    if (k >= init.length()) {
-                        break;
-                    }
-                    if (Character.isDigit(init.charAt(k)) && have_space == 1) {
-                        illegal = 1;
-                        break;
-                    }
-                }
-            }
-        }
-        List<nape> napes = new ArrayList<>();
+        illegal = ploy.check_illegal(init);
+        List<Nape> napes = new ArrayList<>();
         if (illegal == 1) {
             System.out.println("WRONG FORMAT!");
         } else {
@@ -222,32 +261,18 @@ public class polyy {
             if (Character.isDigit(init.charAt(0)) || init.charAt(0) == 'x') {
                 init = '+' + init;
             }
-            String spt = "(([-+]([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|([-+](x(\\^[-+]?[0-9]+)?))|([-+]([0-9]+)))+";
-            //System.out.println(init);
+            String spt = "(([-+]([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))" +
+                    "|([-+](x(\\^[-+]?[0-9]+)?))|([-+]([0-9]+)))+";
             if (init.matches(spt)) {
-                String[] spt_result = init.split("(?<=(x|[0-9])(?=[-+]))");
-                for (i = 0; i < spt_result.length; i++) {
-                    //System.out.println(spt_result[i]);
-                    napes.add(new nape(spt_result[i]));
+                String[] sptResult = init.split("(?<=(x|[0-9])(?=[-+]))");
+                for (i = 0; i < sptResult.length; i++) {
+                    napes.add(new Nape(sptResult[i]));
                 }
-                List<nape> t = combine(napes);
+                List<Nape> t = combine(napes);
                 for (i = 0; i < t.size(); i++) {
-                    //System.out.print(t.get(i).get_coeff()+" "+t.get(i).get_index()+" ");
                     t.set(i, t.get(i).dervation());
                 }
-                int is_first = 0;
-                //System.out.print("\n");
-                for (i = 0; i < t.size(); i++) {
-                    if (t.size() > 1) {
-                        if (is_first == 0) {
-                            is_first = print(t.get(i).get_coeff(), t.get(i).get_index(), is_first);
-                        } else {
-                            is_first = print(t.get(i).get_coeff(), t.get(i).get_index(), is_first);
-                        }
-                    } else if (t.size() == 1) {
-                        print_one(t.get(i).get_coeff(), t.get(i).get_index());
-                    }
-                }
+                ploy.console(t,0);
             } else {
                 System.out.print("WRONG FORMAT!");
             }
