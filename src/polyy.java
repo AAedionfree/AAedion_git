@@ -226,20 +226,20 @@ public class polyy {
                 init = '+' + init;
             }
             String spt = "(([-+]([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|([-+](x(\\^[-+]?[0-9]+)?))|([-+]([0-9]+)))+";
-            System.out.println(init);
+            //System.out.println(init);
             if (init.matches(spt)) {
                 String[] spt_result = init.split("(?<=(x|[0-9])(?=[-+]))");
                 for (i = 0; i < spt_result.length; i++) {
-                    System.out.println(spt_result[i]);
+                    //System.out.println(spt_result[i]);
                     napes.add(new nape(spt_result[i]));
                 }
                 List<nape> t = combine(napes);
                 for (i = 0; i < t.size(); i++) {
-                    System.out.print(t.get(i).get_coeff()+" "+t.get(i).get_index()+" ");
+                    //System.out.print(t.get(i).get_coeff()+" "+t.get(i).get_index()+" ");
                     t.set(i, t.get(i).dervation());
                 }
                 int is_first = 0;
-                System.out.print("\n");
+                //System.out.print("\n");
                 for (i = 0; i < t.size(); i++) {
                     if (t.size() > 1) {
                         if (is_first == 0) {
