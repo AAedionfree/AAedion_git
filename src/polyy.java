@@ -1,7 +1,4 @@
 package oo;
-
-import com.sun.deploy.perf.NativePerfHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
