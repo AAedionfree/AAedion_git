@@ -1,5 +1,6 @@
 package oo;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,9 @@ public class Polyy {
         }
     }
 
-    public static int print(int coeff, int index, int t) {
+    public static int print(BigInteger coeffBig, BigInteger indexBig, int t) {
+        int coeff = coeffBig.intValue();
+        int index = indexBig.intValue();
         if (t == 0) {
             if (coeff == 0) {
                 return 0;
@@ -223,7 +226,7 @@ public class Polyy {
                 int beforePos = Integer.parseInt(pos.get(napes.get(i)
                         .get_index()).toString());
                 Nape temp = new Nape(napes.get(beforePos).get_coeff()
-                        + napes.get(i).get_coeff(),
+                        .add(napes.get(i).get_coeff()),
                         napes.get(i).get_index());
                 napes.remove(i);
                 napes.set(beforePos, temp);
