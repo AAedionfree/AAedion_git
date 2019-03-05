@@ -1,5 +1,6 @@
 package oo;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -92,19 +93,15 @@ public class polyy {
     }
 //2x+3-1+6x^2+123+2x
     public static List<nape> combine(List<nape> napes) {
-        int[] find = new int[1000];
-        int[] pos = new int[1000];
+        HashMap find = new HashMap();
+        HashMap pos = new HashMap();
         int i;
-        //init
-        for (i = 0; i < 1000; i++) {
-            find[i] = 0;
-        }
         for (i = 0; i < napes.size(); i++) {
-            if (find[napes.get(i).get_index()] == 0) {
-                find[napes.get(i).get_index()] = 1;
-                pos[napes.get(i).get_index()] = i;
+            if (find.get(napes.get(i).get_index()) == null) {
+                find.put(napes.get(i).get_index(),1);
+                pos.put(napes.get(i).get_index(),i);
             } else {
-                int before_pos = pos[napes.get(i).get_index()];
+                int before_pos = Integer.parseInt(pos.get(napes.get(i).get_index()).toString());
                 nape temp = new nape(napes.get(before_pos).get_coeff() + napes.get(i).get_coeff(),
                         napes.get(i).get_index());
                 napes.remove(i);
