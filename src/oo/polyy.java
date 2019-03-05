@@ -232,7 +232,7 @@ public class polyy {
             if (init.matches(spt)) {
                 String[] spt_result = init.split("(?<=(x|[0-9])(?=[-+]))");
                 for (i = 0; i < spt_result.length; i++) {
-                    System.out.println(spt_result[i]);
+                    //System.out.println(spt_result[i]);
                     napes.add(new nape(spt_result[i]));
                 }
                 List<nape> t = combine(napes);
