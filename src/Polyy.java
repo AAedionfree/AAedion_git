@@ -62,6 +62,10 @@ public class Polyy {
         } else {
             sign = "";
         }
+        if(coeffclass == 0 && s == 1){
+            System.out.print("0");
+            return 1;
+        }
         if (coeffclass == 0) {
             return 1;
         }
@@ -216,11 +220,6 @@ public class Polyy {
         return illegal;
     }
 
-
-
-
-
-
     private static List<Nape> combine(List<Nape> napes) {
         HashMap find = new HashMap();
         HashMap pos = new HashMap();
@@ -246,7 +245,7 @@ public class Polyy {
     public static void main(String[] args) {
         int i;
         int illegal = 0;
-        Polyy ploy = new Polyy(read.init());
+        Polyy ploy = new Polyy(Read.init());
         String init = ploy.get_init();
         if (init.length() == 0) {
             System.out.print("WRONG FORMAT!");

@@ -6,6 +6,7 @@ public class Nape {
     //符号 系数 指数
     private BigInteger coefficient;
     private BigInteger index;
+
     Nape(String na)
     {
         int i = 0;
