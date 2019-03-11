@@ -39,7 +39,6 @@ public class Polyy {
     private static int print(BigInteger coeff, BigInteger index, int t, int s) {
         int coeffclass;
         int indexclass;
-
         if (coeff.toString().equals("0")) {
             coeffclass = 0;
         } else if (coeff.toString().equals("1")) {
@@ -62,38 +61,31 @@ public class Polyy {
         } else {
             sign = "";
         }
-        if(coeffclass == 0 && s == 1){
+        if (coeffclass == 0 && s == 1)
+        {
             System.out.print("0");
             return 1;
-        }
-        if (coeffclass == 0) {
+        } else if (coeffclass == 0) {
             return 1;
-        }
-        if (indexclass == 0) {
+        } else if (indexclass == 0) {
             System.out.print(sign + coeff);
             return 1;
-        }
-        if (coeffclass == 1 && indexclass != 1) {
+        } else if (coeffclass == 1 && indexclass != 1) {
             System.out.print(sign + "x^" + index);
             return 1;
-        }
-        if (coeffclass == 1 && indexclass == 1) {
+        } else if (coeffclass == 1 && indexclass == 1) {
             System.out.print(sign + "x");
             return 1;
-        }
-        if (coeffclass == -1 && indexclass == 1) {
+        } else if (coeffclass == -1 && indexclass == 1) {
             System.out.print("-x");
             return 1;
-        }
-        if (coeffclass == -1 && indexclass != 1) {
+        } else if (coeffclass == -1 && indexclass != 1) {
             System.out.print("-x^" + index);
             return 1;
-        }
-        if (coeffclass != 1 && indexclass == 1) {
+        } else if (coeffclass != 1 && indexclass == 1) {
             System.out.print(sign + coeff + "*x");
             return 1;
-        }
-        if (coeffclass != 0 && indexclass != 0) {
+        } else if (coeffclass != 0 && indexclass != 0) {
             System.out.print(sign + coeff + "*x^" + index);
             return 1;
         }
