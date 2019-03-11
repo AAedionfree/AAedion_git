@@ -6,7 +6,6 @@ public class Nape {
     //符号 系数 指数
     private BigInteger coefficient;
     private BigInteger index;
-
     Nape(String na)
     {
         int i = 0;
@@ -29,22 +28,19 @@ public class Nape {
         }
         if (!na.contains("x"))
         {
-            coefficient = new BigInteger(change
-                    * Integer.parseInt(na.substring(1,na.length())) + "");
+            coefficient = new BigInteger(na.substring(0,na.length()));
             index = new BigInteger("0");
         }
         if (na.contains("x") && na.contains("*") && !na.contains("^"))
         {
             temp = na.indexOf("x");
-            coefficient = new BigInteger(change *
-                    Integer.parseInt(na.substring(1,temp - 1)) + "");
+            coefficient = new BigInteger(na.substring(0,temp - 1));
             index = new BigInteger("1");
         }
         if (na.contains("x") && na.contains("*") && na.contains("^"))
         {
             temp = na.indexOf("x");
-            coefficient = new BigInteger(change *
-                    Integer.parseInt(na.substring(1,temp - 1)) + "");
+            coefficient = new BigInteger(na.substring(0,temp - 1));
             index = new BigInteger(na.substring(temp + 2,na.length()));
         }
         if (na.contains("x") && !na.contains("*") && na.contains("^"))
