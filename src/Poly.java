@@ -134,14 +134,15 @@ public class Poly {
         String illeage3 = ".*(\\*\\s*\\+\\s+[0-9+]).*";
         String illeage4 = ".*([-+][-+]\\s+[-+]).*";
         String illeage5 = ".*([-+][-+][-+]\\s+).*";
+        String illeage6 = ".*([-+][-+][-+]\\s*\\D).*";
         boolean condition1 = init.matches(illeage1);
         boolean condition2 = init.matches(illeage2);
         boolean condition3 = init.matches(illeage3);
         boolean condition4 = init.matches(illeage4);
         boolean condition5 = init.matches(illeage5);
-
+        boolean condition6 = init.matches(illeage6);
         if (condition1 || condition2
-                || condition3 || condition4 || condition5) {
+                || condition3 || condition4 || condition5 || condition6) {
             return false;
         }
         String head = "((((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
@@ -149,14 +150,13 @@ public class Poly {
                 "(\\s*[-+]?([0-9]+)))|" +
                 "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
                 "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))" +
-                "\\s*)+";
+                "\\s*)";
         String tail = "(\\*\\s*(((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?([0-9]+)))|" +
                 "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
                 "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)*";
-        Scanner in = new Scanner(System.in);
-        String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")+";
+        String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")";
         String term1 = "([-+]\\s*[-+]?[-+]?" + head + tail + ")*";
         String term = termhead + term1;
         if (init.matches(term)) {
@@ -322,7 +322,7 @@ public class Poly {
         int cont = 0;
         if (!coef.equals("")) {
             System.out.print(coef);
-            if (!coef.equals("") && !coef.equals("+")) {
+            if (!coef.equals("") && !coef.equals("+") && !coef.equals("-")) {
                 cont = 1;
             }
         }
