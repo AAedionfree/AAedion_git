@@ -1,7 +1,12 @@
 package ootwo;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Poly {
     private String init;
@@ -19,29 +24,32 @@ public class Poly {
     }
 
     private String[] Split() {
-        String result[] = init.split("(?<![\\*\\^])(?=\\+)");
+        String[] result = init.split("(?<![\\*\\^])(?=\\+)");
         return result;
     }
 
     private static HashMap com(HashMap temp, String problem, String factor) {
         int len = factor.length();
-        if (problem.equals("sin") || problem.equals("cos") || problem.equals("x")) {
+        if (problem.equals("sin") || problem.equals("cos")
+                || problem.equals("x")) {
             if (factor.contains("^")) {
                 int t = factor.indexOf("^");
                 BigInteger index = new BigInteger(factor.substring(t + 1, len));
                 if (temp.get(problem) == null) {
                     temp.put(problem, index);
                 } else {
-                    BigInteger before = new BigInteger(temp.get(problem).toString());
+                    BigInteger before = new BigInteger(temp.get(problem)
+                            .toString());
                     temp.put(problem, before.add(index));
                 }
             } else {
-                BigInteger sin_index = new BigInteger("1");
+                BigInteger sinindex = new BigInteger("1");
                 if (temp.get(problem) == null) {
-                    temp.put(problem, sin_index);
+                    temp.put(problem, sinindex);
                 } else {
-                    BigInteger before = new BigInteger(temp.get(problem).toString());
-                    temp.put(problem, before.add(sin_index));
+                    BigInteger before =
+                            new BigInteger(temp.get(problem).toString());
+                    temp.put(problem, before.add(sinindex));
                 }
             }
         } else if (problem.equals("final")) {
@@ -49,7 +57,8 @@ public class Poly {
             if (temp.get("final") == null) {
                 temp.put(problem, t);
             } else {
-                BigInteger before = new BigInteger(temp.get(problem).toString());
+                BigInteger before =
+                        new BigInteger(temp.get(problem).toString());
                 temp.put(problem, before.multiply(t));
             }
         }
@@ -119,18 +128,19 @@ public class Poly {
     }
 
     private boolean check_illeage() {
-        String illeage_1 = ".*([0-9]\\s+[0-9]).*";
-        String illeage_2 = ".*(\\^\\s*\\+\\s+[0-9+]).*";
-        String illeage_3 = ".*(\\*\\s*\\+\\s+[0-9+]).*";
-        String illeage_4 = ".*([-+][-+]\\s+[-+]).*";
-        String illeage_5 = ".*([-+][-+][-+]\\s+).*";
-        boolean condition_1 = init.matches(illeage_1);
-        boolean condition_2 = init.matches(illeage_2);
-        boolean condition_3 = init.matches(illeage_3);
-        boolean condition_4 = init.matches(illeage_4);
-        boolean condition_5 = init.matches(illeage_5);
+        String illeage1 = ".*([0-9]\\s+[0-9]).*";
+        String illeage2 = ".*(\\^\\s*\\+\\s+[0-9+]).*";
+        String illeage3 = ".*(\\*\\s*\\+\\s+[0-9+]).*";
+        String illeage4 = ".*([-+][-+]\\s+[-+]).*";
+        String illeage5 = ".*([-+][-+][-+]\\s+).*";
+        boolean condition1 = init.matches(illeage1);
+        boolean condition2 = init.matches(illeage2);
+        boolean condition3 = init.matches(illeage3);
+        boolean condition4 = init.matches(illeage4);
+        boolean condition5 = init.matches(illeage5);
 
-        if (condition_1 || condition_2 || condition_3 || condition_4 || condition_5) {
+        if (condition1 || condition2
+                || condition3 || condition4 || condition5) {
             return false;
         }
         String head = "((((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
@@ -144,9 +154,9 @@ public class Poly {
                 "((sin\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
                 "((cos\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)+";
         Scanner in = new Scanner(System.in);
-        String term_head = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")+";
+        String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")+";
         String term1 = "([-+]\\s*[-+]?[-+]?" + head + tail + ")*";
-        String term = term_head + term1;
+        String term = termhead + term1;
         if (init.matches(term)) {
             return true;
         } else {
@@ -193,12 +203,12 @@ public class Poly {
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
             Object key = entry.getKey();
-            Object val = entry.getValue();
-            BigInteger a[] = new BigInteger[4];
-            String ret[] = key.toString().split(" ");
+            BigInteger[] a = new BigInteger[4];
+            String[] ret = key.toString().split(" ");
             a[0] = new BigInteger(ret[0]);
             a[1] = new BigInteger(ret[1]);
             a[2] = new BigInteger(ret[2]);
+            Object val = entry.getValue();
             a[3] = new BigInteger(val.toString());
             if (t == 0) {
                 Poly.print(a, 0);
@@ -211,9 +221,9 @@ public class Poly {
 
     private static void print(BigInteger[] info, int t) {
         String sign;
-        int a_class;
-        int b_class;
-        int c_class;
+        int aclass;
+        int bclass;
+        int cclass;
         if (t == 0) {
             if (info[3].compareTo(new BigInteger("0")) > 0) {
                 sign = "";
@@ -228,78 +238,94 @@ public class Poly {
             }
         }
         if (info[0].toString().equals("0")) {
-            a_class = 0;
+            aclass = 0;
         } else if (info[0].toString().equals("1")) {
-            a_class = 1;
+            aclass = 1;
         } else {
-            a_class = 2;
+            aclass = 2;
         }
         if (info[1].toString().equals("0")) {
-            b_class = 0;
+            bclass = 0;
         } else if (info[1].toString().equals("1")) {
-            b_class = 1;
+            bclass = 1;
         } else {
-            b_class = 2;
+            bclass = 2;
         }
         if (info[2].toString().equals("0")) {
-            c_class = 0;
+            cclass = 0;
         } else if (info[2].toString().equals("1")) {
-            c_class = 1;
+            cclass = 1;
         } else {
-            c_class = 2;
+            cclass = 2;
         }
-        Poly.print1(info[3].toString(), a_class, b_class, c_class, t, info[0], info[1], info[2]);
+        Poly.print1(info[3].toString(), aclass, bclass, cclass,
+                t, info[0], info[1], info[2]);
     }
 
-    private static void print1(String coeff, int a_class, int b_class, int c_class, int t, BigInteger a, BigInteger b, BigInteger c) {
-        int cont = 0;
+    private static void print1(String coeff, int aclass, int bclass, int cclass,
+                               int t, BigInteger a,
+                               BigInteger b, BigInteger c) {
         String coef;
         String sign = "";
         String nape;
         String sin;
         String cos;
-        if (new BigInteger(coeff).compareTo(new BigInteger("0")) > 0 && t == 0) {
+        if (new BigInteger(coeff)
+                .compareTo(new BigInteger("0")) > 0 && t == 0) {
             sign = "";
-        } else if (new BigInteger(coeff).compareTo(new BigInteger("0")) > 0 && t == 1) {
+        } else if (new BigInteger(coeff)
+                .compareTo(new BigInteger("0")) > 0 && t == 1) {
             sign = "+";
         } else {
-            sign = "-";
+            sign = "";
         }
-        if (a_class == 0 && b_class == 0 && c_class == 0) {
+        if (aclass == 0 && bclass == 0 && cclass == 0) {
             System.out.println(sign + coeff);
         }
         if (coeff.equals("-1")) {
-            coef = "-";
+            coef = "";
         } else if (coeff.equals("1")) {
             coef = "+";
         } else {
-            coef = coeff;
+            coef = sign + coeff;
         }
-        if (a_class == 0) {
+        if (aclass == 0) {
             nape = "";
-        } else if (a_class == 1) {
+        } else if (aclass == 1) {
             nape = "x";
         } else {
             nape = "x^" + a.toString();
         }
-        if (b_class == 0) {
+        if (bclass == 0) {
             sin = "";
-        } else if (b_class == 1) {
+        } else if (bclass == 1) {
             sin = "sin(x)";
         } else {
             sin = "sin(x)^" + b.toString();
         }
-        if (c_class == 0) {
+        if (cclass == 0) {
             cos = "";
-        } else if (c_class == 1) {
+        } else if (cclass == 1) {
             cos = "cos(x)";
         } else {
             cos = "cos(x)^" + c.toString();
         }
+        Poly.print_real(coef, nape, sin, cos);
+    }
+
+    private static void print_real(String coef, String nape,
+                                   String sin, String cos) {
+        int cont = 0;
         if (!coef.equals("")) {
             System.out.print(coef);
+            if (!coef.equals("") && !coef.equals("+")) {
+                cont = 1;
+            }
         }
-        if (!nape.equals("")) {
+        if (!nape.equals("") && cont == 1) {
+            System.out.print("*" + nape);
+            cont = 1;
+        } else if (!nape.equals("") && cont == 0) {
             System.out.print(nape);
             cont = 1;
         }
@@ -318,12 +344,10 @@ public class Poly {
     }
 
     public static void main(String[] args) {
-        int i = 0;
         Single[] a;
         Single[] single = new Single[500];
-        Single[] der_result = new Single[1500];
+        Single[] derresult = new Single[1500];
         List<HashMap> edion = new ArrayList<>();
-        HashMap result;
         Scanner in = new Scanner(System.in);
         String init = in.nextLine();
         Poly poly = new Poly(init);
@@ -333,14 +357,16 @@ public class Poly {
         }
         poly.deal();
         edion = poly.Integration(poly);
+        int i = 0;
         for (i = 0; i < edion.size(); i++) {
             single[i] = new Single(edion.get(i));
             a = single[i].der();
-            der_result[3 * i] = a[0];
-            der_result[3 * i + 1] = a[1];
-            der_result[3 * i + 2] = a[2];
+            derresult[3 * i] = a[0];
+            derresult[3 * i + 1] = a[1];
+            derresult[3 * i + 2] = a[2];
         }
-        result = Poly.result(der_result);
+        HashMap result;
+        result = Poly.result(derresult);
         poly.print_all(result);
     }
 }
