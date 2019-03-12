@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class Poly {
     private String init;
+    private static int zero = 0;
 
     Poly(String init) {
         this.init = init;
@@ -146,13 +147,14 @@ public class Poly {
         String head = "((((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?([0-9]+)))|" +
-                "((sin\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
-                "((cos\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*\\*\\s*)*";
+                "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
+                "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))" +
+                "\\s*\\*\\s*)*";
         String tail = "((((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?([0-9]+)))|" +
-                "((sin\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
-                "((cos\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)+";
+                "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
+                "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)+";
         Scanner in = new Scanner(System.in);
         String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")+";
         String term1 = "([-+]\\s*[-+]?[-+]?" + head + tail + ")*";
@@ -283,7 +285,7 @@ public class Poly {
             System.out.println(sign + coeff);
         }
         if (coeff.equals("-1")) {
-            coef = "";
+            coef = "-";
         } else if (coeff.equals("1")) {
             coef = "+";
         } else {
@@ -313,8 +315,8 @@ public class Poly {
         Poly.print_real(coef, nape, sin, cos);
     }
 
-    private static void print_real(String coef, String nape,
-                                   String sin, String cos) {
+    private static int print_real(String coef, String nape,
+                                  String sin, String cos) {
         int cont = 0;
         if (!coef.equals("")) {
             System.out.print(coef);
@@ -325,37 +327,50 @@ public class Poly {
         if (!nape.equals("") && cont == 1) {
             System.out.print("*" + nape);
             cont = 1;
+            zero = 1;
         } else if (!nape.equals("") && cont == 0) {
             System.out.print(nape);
             cont = 1;
+            zero = 1;
         }
         if (!sin.equals("") && cont == 1) {
             System.out.print("*" + sin);
+            zero = 1;
         } else if (!sin.equals("") && cont == 0) {
             System.out.print(sin);
             cont = 1;
+            zero = 1;
         }
         if (!cos.equals("") && cont == 1) {
             System.out.print("*" + cos);
-        } else if (!sin.equals("") && cont == 0) {
+            zero = 1;
+        } else if (!cos.equals("") && cont == 0) {
             System.out.print(cos);
             cont = 1;
+            zero = 1;
         }
+        return zero;
     }
 
     public static void main(String[] args) {
         Single[] a;
         Single[] single = new Single[500];
         Single[] derresult = new Single[1500];
-        List<HashMap> edion = new ArrayList<>();
         Scanner in = new Scanner(System.in);
-        String init = in.nextLine();
+        String init;
+        try {
+            init = in.nextLine();
+        } catch (Exception e) {
+            System.out.print("WRONG FORMAT!");
+            return;
+        }
         Poly poly = new Poly(init);
         if (!poly.check_illeage()) {
             System.out.print("WRONG FORMAT!");
             return;
         }
         poly.deal();
+        List<HashMap> edion = new ArrayList<>();
         edion = poly.Integration(poly);
         int i = 0;
         for (i = 0; i < edion.size(); i++) {
@@ -368,5 +383,8 @@ public class Poly {
         HashMap result;
         result = Poly.result(derresult);
         poly.print_all(result);
+        if (zero == 0) {
+            System.out.print("0");
+        }
     }
 }

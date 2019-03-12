@@ -3,17 +3,17 @@ package ootwo;
 import java.math.BigInteger;
 
 public class Trig {
-    private  BigInteger nape_coeff;
-    private BigInteger nape_index;
+    private BigInteger napecoeff;
+    private BigInteger napeindex;
     private BigInteger index;
 
-    Trig(BigInteger nape_coeff, BigInteger nape_index, BigInteger index){
-        this.nape_coeff = nape_coeff;
-        this.nape_index = nape_index;
+    Trig(BigInteger napecoeff, BigInteger napeindex, BigInteger index) {
+        this.napecoeff = napecoeff;
+        this.napeindex = napeindex;
         this.index = index;
     }
 
-    public BigInteger get_index(){
+    public BigInteger get_index() {
         return index;
     }
 }
