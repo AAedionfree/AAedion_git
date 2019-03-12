@@ -25,7 +25,7 @@ public class Poly {
     }
 
     private String[] Split() {
-        String[] result = init.split("(?<![\\*\\^])(?=\\+)");
+        String[] result = init.split("(?<![\\*\\^])(?=[-+])");
         return result;
     }
 
@@ -151,14 +151,14 @@ public class Poly {
                 "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
                 "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))" +
                 "\\s*)";
-        String tail = "(\\*\\s*(((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
+        String tail =  "(\\*\\s*(((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?([0-9]+)))|" +
                 "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
                 "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)*";
-        String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")";
-        String term1 = "([-+]\\s*[-+]?[-+]?" + head + tail + ")*";
-        String term = termhead + term1;
+        String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")*";
+        String term1 = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")*";
+        String term = termhead+term1;
         if (init.matches(term)) {
             return true;
         } else {
