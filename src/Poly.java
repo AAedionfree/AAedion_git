@@ -76,7 +76,8 @@ public class Poly {
             String[] factor = result[i].split("\\*");
             for (j = 0; j < factor.length; j++) {
                 int len = factor[j].length();
-                if (j == 0 && factor[j].charAt(0) == '-' && factor[j].charAt(1) == 'x') {
+                if (j == 0 && factor[j].charAt(0) == '-'
+                        && factor[j].charAt(1) == 'x') {
                     BigInteger fin = new BigInteger("-1");
                     temp.put("final", fin);
                     continue;
@@ -158,7 +159,7 @@ public class Poly {
                 "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)*+";
         String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + "){1}+";
         String term1 = "([-+]\\s*[-+]?[-+]?" + head + tail + ")*+";
-        String term = "("+termhead + term1 + ")";
+        String term = "(" + termhead + term1 + ")";
         if (init.matches(term)) {
             return true;
         } else {
