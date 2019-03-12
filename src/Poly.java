@@ -149,12 +149,12 @@ public class Poly {
                 "(\\s*[-+]?([0-9]+)))|" +
                 "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
                 "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))" +
-                "\\s*\\*\\s*)*";
-        String tail = "((((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
+                "\\s*)+";
+        String tail = "(\\*\\s*(((\\s*[-+]?([0-9]+\\*)(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?(x(\\^[-+]?[0-9]+)?))|" +
                 "(\\s*[-+]?([0-9]+)))|" +
                 "((sin\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+)|" +
-                "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)+";
+                "((cos\\s*\\(\\s*x\\s*\\)(\\^\\s*[-+]?[0-9]+)?)+))\\s*)*";
         Scanner in = new Scanner(System.in);
         String termhead = "([-+]?\\s*[-+]?[-+]?" + head + tail + ")+";
         String term1 = "([-+]\\s*[-+]?[-+]?" + head + tail + ")*";
@@ -283,6 +283,8 @@ public class Poly {
         }
         if (aclass == 0 && bclass == 0 && cclass == 0) {
             System.out.println(sign + coeff);
+            zero = 1;
+            return;
         }
         if (coeff.equals("-1")) {
             coef = "-";
@@ -353,38 +355,38 @@ public class Poly {
     }
 
     public static void main(String[] args) {
-        Single[] a;
-        Single[] single = new Single[500];
-        Single[] derresult = new Single[1500];
-        Scanner in = new Scanner(System.in);
-        String init;
         try {
+            Single[] a;
+            Single[] single = new Single[500];
+            Single[] derresult = new Single[1500];
+            Scanner in = new Scanner(System.in);
+            String init;
             init = in.nextLine();
+            Poly poly = new Poly(init);
+            if (!poly.check_illeage()) {
+                System.out.print("WRONG FORMAT!");
+                return;
+            }
+            poly.deal();
+            List<HashMap> edion = new ArrayList<>();
+            edion = poly.Integration(poly);
+            int i = 0;
+            for (i = 0; i < edion.size(); i++) {
+                single[i] = new Single(edion.get(i));
+                a = single[i].der();
+                derresult[3 * i] = a[0];
+                derresult[3 * i + 1] = a[1];
+                derresult[3 * i + 2] = a[2];
+            }
+            HashMap result;
+            result = Poly.result(derresult);
+            poly.print_all(result);
+            if (zero == 0) {
+                System.out.print("0");
+            }
         } catch (Exception e) {
             System.out.print("WRONG FORMAT!");
             return;
-        }
-        Poly poly = new Poly(init);
-        if (!poly.check_illeage()) {
-            System.out.print("WRONG FORMAT!");
-            return;
-        }
-        poly.deal();
-        List<HashMap> edion = new ArrayList<>();
-        edion = poly.Integration(poly);
-        int i = 0;
-        for (i = 0; i < edion.size(); i++) {
-            single[i] = new Single(edion.get(i));
-            a = single[i].der();
-            derresult[3 * i] = a[0];
-            derresult[3 * i + 1] = a[1];
-            derresult[3 * i + 2] = a[2];
-        }
-        HashMap result;
-        result = Poly.result(derresult);
-        poly.print_all(result);
-        if (zero == 0) {
-            System.out.print("0");
         }
     }
 }
