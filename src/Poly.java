@@ -80,7 +80,6 @@ public class Poly {
                         && factor[j].charAt(1) == 'x') {
                     BigInteger fin = new BigInteger("-1");
                     temp.put("final", fin);
-                    continue;
                 }
                 if (factor[j].contains("sin")) {
                     temp = com(temp, "sin", factor[j]);
