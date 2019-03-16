@@ -283,6 +283,10 @@ public class Poly {
             sign = "";
         }
         if (aclass == 0 && bclass == 0 && cclass == 0) {
+            if(!coeff.toString().equals("0")){
+                System.out.print(sign+coeff);
+                zero = 1;
+            }
             return;
         }
         if (coeff.equals("-1")) {
