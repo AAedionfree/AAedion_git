@@ -1,4 +1,4 @@
-package ootwo;
+package oo;
 
 import java.math.BigInteger;
 
