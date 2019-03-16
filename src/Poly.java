@@ -76,9 +76,8 @@ public class Poly {
             String[] factor = result[i].split("\\*");
             for (j = 0; j < factor.length; j++) {
                 int len = factor[j].length();
-                if (j == 0 && factor[j].charAt(0) == '-'
-                        && (factor[j].contains("cos")
-                        || factor[j].contains("sin")
+                if (j == 0 && factor[j].charAt(0) == '-' &&
+                        (factor[j].contains("cos") || factor[j].contains("sin")
                         || factor[j].contains("x"))) {
                     BigInteger fin = new BigInteger("-1");
                     temp.put("final", fin);
@@ -392,11 +391,3 @@ public class Poly {
         }
     }
 }
-//4 sin cos^3
-//4 x cos^4
-//-12 x sin^2 cos^2
-//-4 sin cos^3
-
-
-//错误数据
-//4*x*sin(x)*cos(x)^3-cos(x)^4
