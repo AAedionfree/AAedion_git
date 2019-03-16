@@ -235,8 +235,6 @@ public class Polyy {
     public static void main(String[] args) {
         int i;
         int illegal = 0;
-        String a="(((sin\\(\\s*x\\s*\\)(\\^[-+]?[0-9]+)?)|" +
-                "(cos\\(\\s*x\\s*\\)(\\^[-+]?[0-9]+)?))\\s*(?=\\*))+";
         Polyy ploy = new Polyy(Read.init());
         String init = ploy.get_init();
         if (init.length() == 0) {
