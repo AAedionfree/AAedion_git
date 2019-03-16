@@ -60,8 +60,8 @@ public class Polyy {
         } else if (indexclass == 0) {
             System.out.print(sign + coeff);
             return 1;
-        } else if (coeffclass == 1 && indexclass != 1) {
-            System.out.print(sign + "x^" + index);
+        } else if (coeffclass == 1 && indexclass == 1) {
+            System.out.print(sign + "x");
             return 1;
         }  else if (coeffclass != 1 && indexclass == 1) {
             System.out.print(sign + coeff + "*x");
