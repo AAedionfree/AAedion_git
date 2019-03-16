@@ -4,100 +4,101 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
-// 数字之间存在空格 例如 2 3
-// 项头++ +2 == ++ 1*2  错误  ++ 1 == +1* 1合法 + ++2 == + 1*+2
-// 项中 + 3  错误
-// ^+ 2 错误
 public class Polyy {
-    private String init;
-
-    Polyy(String s) {
-        this.init = s;
-    }
-
-    private String get_init() {
-        return this.init;
-    }
-
-    private void console(List<Nape> t, int isFirst) {
+    public void console(List<Nape> t,int isFirst)
+    {
         int i;
         int isfirst = isFirst;
         for (i = 0; i < t.size(); i++) {
             if (t.size() > 1) {
                 if (isfirst == 0) {
                     isfirst = print(t.get(i).get_coeff(),
-                            t.get(i).get_index(), 0, t.size());
+                            t.get(i).get_index(), 0);
                 } else {
                     isfirst = print(t.get(i).get_coeff(),
-                            t.get(i).get_index(), 1, t.size());
+                            t.get(i).get_index(), 1);
                 }
             } else if (t.size() == 1) {
                 //print_one(t.get(i).get_coeff(), t.get(i).get_index());
                 print(t.get(i).get_coeff(),
-                        t.get(i).get_index(), 0, t.size());
+                        t.get(i).get_index(), 0);
             }
         }
     }
 
-    private static int print(BigInteger coeff, BigInteger index, int t, int s) {
-        int coeffclass;
-        int indexclass;
-        if (coeff.toString().equals("0")) {
-            coeffclass = 0;
-        } else if (coeff.toString().equals("1")) {
-            coeffclass = 1;
-        } else if (coeff.toString().equals("-1")) {
-            coeffclass = -1;
+    public static int print(BigInteger coeffBig, BigInteger indexBig, int t) {
+        int coeff = coeffBig.intValue();
+        int index = indexBig.intValue();
+        if (t == 0) {
+            if (coeff == 0) {
+                return 0;
+            }
+            if (index == 0) {
+                System.out.print(coeff);
+                return 1;
+            }
+            if (coeff == 1 && index != 1) {
+                System.out.print("x^" + index);
+                return 1;
+            }
+            if (coeff == 1 && index == 1) {
+                System.out.print("x");
+                return 1;
+            }
+            if (coeff != 1 && index == 1) {
+                System.out.print(coeff + "*x");
+                return 1;
+            }
+            if (coeff != 0 && index != 0) {
+                System.out.print(coeff + "*x^" + index);
+                return 1;
+            }
         } else {
-            coeffclass = 2;
-        }
-        if (index.toString().equals("0")) {
-            indexclass = 0;
-        } else if (index.toString().equals("1")) {
-            indexclass = 1;
-        } else {
-            indexclass = 2;
-        }
-        String sign;
-        if (coeff.compareTo(new BigInteger("0")) > 0 && t == 1) {
-            sign = "+";
-        } else {
-            sign = "";
-        }
-        if (coeffclass == 0 && s == 1)
-        {
-            System.out.print("0");
-            return 1;
-        } else if (coeffclass == 0) {
-            return 1;
-        } else if (indexclass == 0) {
-            System.out.print(sign + coeff);
-            return 1;
-        } else if (coeffclass == 1 && indexclass != 1) {
-            System.out.print(sign + "x^" + index);
-            return 1;
-        } else if (coeffclass == 1 && indexclass == 1) {
-            System.out.print(sign + "x");
-            return 1;
-        } else if (coeffclass != 1 && indexclass == 1) {
-            System.out.print(sign + coeff + "*x");
-            return 1;
-        } else if (coeffclass != 0 && indexclass != 0) {
-            System.out.print(sign + coeff + "*x^" + index);
-            return 1;
+            String sign;
+            if (coeff > 0) {
+                sign = "+";
+            } else {
+                sign = "";
+            }
+            if (coeff == 0) {
+                return 0;
+            }
+            if (index == 0) {
+                System.out.print(sign + coeff);
+                return 1;
+            }
+            if (coeff == 1 && index != 1) {
+                System.out.print(sign + "x^" + index);
+                return 1;
+            }
+            if (coeff == 1 && index == 1) {
+                System.out.print(sign + "x");
+                return 1;
+            }
+            if (coeff != 1 && index == 1) {
+                System.out.print(sign + coeff + "*x");
+                return 1;
+            }
+            if (coeff != 0 && index != 0) {
+                System.out.print(sign + coeff + "*x^" + index);
+                return 1;
+            }
         }
         return 111;
     }
 
-    private static int adjust_illegal(int k, int haveSpace, String init) {
+    public static int adjust_illegal(int k,int haveSpace,String init)
+    {
         if (Character.isDigit(init.charAt(k)) && haveSpace == 1) {
             return 1;
         }
         return 0;
     }
 
-    private static int cond1(String init, int i) {
+    public static int cond1(String init,int i)
+    {
         int k;
         int illegal;
         int haveSpace;
@@ -114,14 +115,15 @@ public class Polyy {
             if (k >= init.length()) {
                 return 0;
             }
-            if ((illegal = adjust_illegal(k, haveSpace, init)) == 1) {
+            if ((illegal = adjust_illegal(k,haveSpace,init)) == 1) {
                 return 1;
             }
         }
         return 0;
     }
 
-    private static int cond2(String init, int i) {
+    public  static int cond2(String init,int i)
+    {
         int j;
         int k;
         int haveSpace;
@@ -151,7 +153,7 @@ public class Polyy {
                 if (k >= init.length()) {
                     return 0;
                 }
-                if ((illegal = adjust_illegal(k, haveSpace, init)) == 1) {
+                if ((illegal = adjust_illegal(k,haveSpace,init)) == 1) {
                     return 1;
                 }
             }
@@ -159,7 +161,8 @@ public class Polyy {
         return 0;
     }
 
-    private static int cond3(String init, int i) {
+    public static int cond3(String init,int i)
+    {
         int j;
         int k;
         int illegal;
@@ -189,7 +192,7 @@ public class Polyy {
                 if (k >= init.length()) {
                     return 0;
                 }
-                if ((illegal = adjust_illegal(k, haveSpace, init)) == 1) {
+                if ((illegal = adjust_illegal(k,haveSpace,init)) == 1) {
                     return 1;
                 }
             }
@@ -197,27 +200,28 @@ public class Polyy {
         return 0;
     }
 
-    private int check_illegal(String init) {
+    public int check_illegal(String init) {
         int illegal = 0;
         int i = 0;
         for (i = 0; i < init.length(); i++) {
             char ch = init.charAt(i);
-            illegal = cond1(init, i) | cond2(init, i) | cond3(init, i);
-            if (illegal == 1) {
+            illegal = cond1(init,i) | cond2(init,i) | cond3(init,i);
+            if (illegal == 1)
+            {
                 break;
             }
         }
         return illegal;
     }
 
-    private static List<Nape> combine(List<Nape> napes) {
+    public static List<Nape> combine(List<Nape> napes) {
         HashMap find = new HashMap();
         HashMap pos = new HashMap();
         int i;
         for (i = 0; i < napes.size(); i++) {
             if (find.get(napes.get(i).get_index()) == null) {
-                find.put(napes.get(i).get_index(), 1);
-                pos.put(napes.get(i).get_index(), i);
+                find.put(napes.get(i).get_index(),1);
+                pos.put(napes.get(i).get_index(),i);
             } else {
                 int beforePos = Integer.parseInt(pos.get(napes.get(i)
                         .get_index()).toString());
@@ -235,8 +239,9 @@ public class Polyy {
     public static void main(String[] args) {
         int i;
         int illegal = 0;
-        Polyy ploy = new Polyy(Read.init());
-        String init = ploy.get_init();
+        Scanner in = new Scanner(System.in);
+        String init = in.nextLine();
+        Polyy ploy = new Polyy();
         if (init.length() == 0) {
             System.out.print("WRONG FORMAT!");
             return;
@@ -266,7 +271,7 @@ public class Polyy {
                 for (i = 0; i < t.size(); i++) {
                     t.set(i, t.get(i).dervation());
                 }
-                ploy.console(t, 0);
+                ploy.console(t,0);
             } else {
                 System.out.print("WRONG FORMAT!");
             }
