@@ -66,13 +66,7 @@ public class Polyy {
         } else if (coeffclass == 1 && indexclass == 1) {
             System.out.print(sign + "x");
             return 1;
-        } else if (coeffclass == -1 && indexclass == 1) {
-            System.out.print("-x");
-            return 1;
-        } else if (coeffclass == -1 && indexclass != 1) {
-            System.out.print("-x^" + index);
-            return 1;
-        } else if (coeffclass != 1 && indexclass == 1) {
+        }  else if (coeffclass != 1 && indexclass == 1) {
             System.out.print(sign + coeff + "*x");
             return 1;
         } else if (coeffclass != 0 && indexclass != 0) {
