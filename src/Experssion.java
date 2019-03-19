@@ -96,6 +96,7 @@ public class Experssion {
                          * 抛出异常   括号不比配
                          */
                         System.out.print("WRONG FORMAT!");
+                        System.exit(-1);
                     }
 
                 }
@@ -192,15 +193,21 @@ public class Experssion {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        Scanner in = new Scanner(System.in);
-        String str = in.nextLine();
-        TreeNode lastRoot = null;
-        lastRoot = buildTree(str);
-        System.out.println("原表达式为:  " + str);
-        System.out.print("后续遍历的结果为:  ");
-        Experssion init = new Experssion();
-        System.out.println(root.get_context(root));
-        System.out.println(TreeNode.der(root));
+        try{
+            Scanner in = new Scanner(System.in);
+            String str = in.nextLine();
+            str = str.replace(" ","").replace("\t","");
+            TreeNode lastRoot = null;
+            lastRoot = buildTree(str);
+            //System.out.println("原表达式为:  " + str);
+            //System.out.print("后续遍历的结果为:  ");
+            Experssion init = new Experssion();
+            //System.out.println(root.get_context(root));
+            System.out.println(TreeNode.der(root));
+        }
+        catch (Exception e){
+            System.out.print("WRONG FORMAT!");
+        }
     }
 
 }
