@@ -1,9 +1,7 @@
 package oothree;
 
-public class Term {
+public abstract class Term {
     public String str;
     public int isleaf;
-    public String der(){
-        return "1";
-    }
+    public abstract Term der();
 }

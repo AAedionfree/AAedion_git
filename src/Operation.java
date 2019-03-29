@@ -5,4 +5,7 @@ public class Operation extends Term{
         isleaf = 0;
         str = a;
     }
+    public Term der(){
+        return new Operation("error");
+    }
 }

@@ -2,6 +2,7 @@ package oothree;
 
 import sun.reflect.generics.tree.Tree;
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
 
@@ -15,31 +16,76 @@ class TreeNode {
         right = null;
     }
 
+    public TreeNode(TreeNode left,String op,TreeNode right) {
+        data = new Operation(op);
+        this.left = left;
+        this.right = right;
+    }
+
     public TreeNode(Term newdata) {
         data = newdata;
         left = null;
         right = null;
     }
-
-    static String der(TreeNode current) {
-        String result = null;
-        if (current != null) {
-            if (current.data.isleaf == 0) {
-                if (current.data.str.equals("+") || current.data.str.equals("-")) {
-                    result = TreeNode.der(current.left) + current.data.str + TreeNode.der(current.right);
-                } else if (current.data.str.equals("*")) {
-                    result = TreeNode.der(current.left) + current.data.str + TreeNode.get_context(current.right)
-                            + "+" + TreeNode.der(current.right) + current.data.str + TreeNode.get_context(current.left);
-                } else if (current.data.str.equals("^")) {
-                    result = "(" + TreeNode.get_context(current.right) + ")" + "*" + TreeNode.get_context(current.left)
-                            + "^(" + TreeNode.get_context(current.right) + "-1)" + "*" + TreeNode.der(current.left);
-                } else if (current.data.str.equals(" qt ")){
-                    result = TreeNode.der(current.left)+"("+TreeNode.get_context(current.right)+")"
-                            +"*"+"("+TreeNode.der(current.right)+")";
+    static TreeNode der(TreeNode current) {
+//        String result = null;
+//        if (current != null) {
+//            if (current.data.isleaf == 0) {
+//                if (current.data.str.equals("+") || current.data.str.equals("-")) {
+//                    result = TreeNode.der(current.left) + current.data.str + TreeNode.der(current.right);
+//                } else if (current.data.str.equals("*")) {
+//                    result = TreeNode.der(current.left) + current.data.str + TreeNode.get_context(current.right)
+//                            + "+" + TreeNode.der(current.right) + current.data.str + TreeNode.get_context(current.left);
+//                } else if (current.data.str.equals("^")) {
+//                    result = "(" + TreeNode.get_context(current.right) + ")" + "*" + TreeNode.get_context(current.left)
+//                            + "^(" + TreeNode.get_context(current.right) + "-1)" + "*" + TreeNode.der(current.left);
+//                } else if (current.data.str.equals(" qt ")){
+//                    result = TreeNode.der(current.left)+"("+TreeNode.get_context(current.right)+")"
+//                            +"*"+"("+TreeNode.der(current.right)+")";
+//                }
+//            }
+//            else if(current.data.isleaf == 1){
+//                return current.data.der();
+//            }
+//            return result;
+//        }
+        TreeNode result = new TreeNode();
+        if(current!=null){
+            if(current.data.isleaf == 0){
+                String op = current.data.str;
+                if(op.equals("+")||op.equals("-")){
+                    result = new TreeNode(
+                            TreeNode.der(current.left),
+                            op,
+                            TreeNode.der(current.right)
+                    );
+                }else if(op.equals("*")){
+                    TreeNode left = new TreeNode(
+                            TreeNode.der(current.left),
+                            op,
+                            current.right
+                    );
+                    TreeNode right = new TreeNode(
+                            current.left,
+                            op,
+                            TreeNode.der(current.right)
+                    );
+                    result = new TreeNode(left,"+",right);
+                }else if(op.equals(" qt ")){
+                    result = new TreeNode(
+                      new TreeNode(TreeNode.der(current.left)," qt ",current.right),
+                      "*",
+                      TreeNode.der(current.right)
+                    );
+                }else if(op.equals("^")){
+                    result = new TreeNode(
+                            new TreeNode(TreeNode.der(current.left),"^",new TreeNode(new Final(new BigInteger(current.right.data.str).subtract(new BigInteger("1")).toString()))),
+                            "*",
+                            TreeNode.der(current.right)
+                    );
                 }
-            }
-            else if(current.data.isleaf == 1){
-                return current.data.der();
+            }else{
+                return new TreeNode(current.data.der());
             }
             return result;
         }
@@ -49,13 +95,17 @@ class TreeNode {
     private static String postOrder(TreeNode currNode) {
         if (currNode != null) {
             String temp = "";
-            temp = temp + "(";
+            if(currNode.data.isleaf == 0){
+                temp = temp + "(";
+            }
             temp = temp + postOrder(currNode.left);
-            if (!currNode.data.str.equals(" qt ")) {
+            if(!currNode.data.str.equals(" qt ")){
                 temp = temp + currNode.data.str;
             }
             temp = temp + postOrder(currNode.right);
-            temp = temp + ")";
+            if(currNode.data.isleaf == 0){
+                temp = temp + ")";
+            }
             return temp;
         }
         return "";
@@ -64,13 +114,16 @@ class TreeNode {
     static String get_context(TreeNode currNode) {
         String deal = "";
         deal = deal + currNode.postOrder(currNode);
-        deal = deal.replace("(si)", "sin");
-        deal = deal.replace("(co)", "cos");
+        deal = deal.replace("si", "sin");
+        deal = deal.replace("co", "cos");
         return deal;
     }
 }
 
-public class Experssion {
+public class
+
+
+Experssion {
 
     static TreeNode root = null;
 
@@ -199,11 +252,11 @@ public class Experssion {
             str = str.replace(" ","").replace("\t","");
             TreeNode lastRoot = null;
             lastRoot = buildTree(str);
-            //System.out.println("原表达式为:  " + str);
-            //System.out.print("后续遍历的结果为:  ");
+            System.out.println("原表达式为:  " + str);
+            System.out.print("后续遍历的结果为:  ");
             Experssion init = new Experssion();
-            //System.out.println(root.get_context(root));
-            System.out.println(TreeNode.der(root));
+            System.out.println(TreeNode.get_context(TreeNode.der(root)));
+//            System.out.println(TreeNode.der(root));
         }
         catch (Exception e){
             System.out.print("WRONG FORMAT!");

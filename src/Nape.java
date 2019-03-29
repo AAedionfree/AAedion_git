@@ -6,7 +6,7 @@ public class Nape extends Leaf{
         str = a;
     }
 
-    public String der(){
-        return "1";
+    public Term der(){
+        return new Nape("1");
     }
 }

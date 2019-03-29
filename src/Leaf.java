@@ -1,9 +1,7 @@
 package oothree;
 
-public class Leaf extends Term {
-    public String der(){
-        return null;
-    }
+public abstract class Leaf extends Term {
+    public abstract Term der();
     Leaf(String a){
         isleaf = 1;
         str = a;

@@ -3,15 +3,14 @@ package oothree;
 public class Trig extends Leaf {
     Trig(String a) {
         super(a);
-        str = a;
     }
-    public String der(){
+    public Term der(){
         if(str.equals("si")){
-            return "cos";
+            return new Trig("co");
         }
         else if(str.equals("co")){
-            return "-1*sin";
+            return new Trig("co");
         }
-        return "error";
+        return new Trig("error");
     }
 }
