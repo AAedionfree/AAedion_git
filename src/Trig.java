@@ -9,7 +9,7 @@ public class Trig extends Leaf {
             return new Trig("co");
         }
         else if(str.equals("co")){
-            return new Trig("co");
+            return new Trig("si");
         }
         return new Trig("error");
     }

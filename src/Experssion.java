@@ -79,9 +79,10 @@ class TreeNode {
                     );
                 }else if(op.equals("^")){
                     result = new TreeNode(
-                            new TreeNode(TreeNode.der(current.left),"^",new TreeNode(new Final(new BigInteger(current.right.data.str).subtract(new BigInteger("1")).toString()))),
+                            new TreeNode(new TreeNode(current.left,"^",new TreeNode(new Final(new BigInteger(current.right.data.str).subtract(new BigInteger("1")).toString()))),
+                                    "*",TreeNode.der(current.left)),
                             "*",
-                            TreeNode.der(current.right)
+                            current.right
                     );
                 }
             }else{
@@ -95,17 +96,13 @@ class TreeNode {
     private static String postOrder(TreeNode currNode) {
         if (currNode != null) {
             String temp = "";
-            if(currNode.data.isleaf == 0){
                 temp = temp + "(";
-            }
             temp = temp + postOrder(currNode.left);
             if(!currNode.data.str.equals(" qt ")){
                 temp = temp + currNode.data.str;
             }
             temp = temp + postOrder(currNode.right);
-            if(currNode.data.isleaf == 0){
                 temp = temp + ")";
-            }
             return temp;
         }
         return "";
@@ -114,8 +111,8 @@ class TreeNode {
     static String get_context(TreeNode currNode) {
         String deal = "";
         deal = deal + currNode.postOrder(currNode);
-        deal = deal.replace("si", "sin");
-        deal = deal.replace("co", "cos");
+        deal = deal.replace("(si)", "sin");
+        deal = deal.replace("(co)", "cos");
         return deal;
     }
 }
@@ -252,8 +249,8 @@ Experssion {
             str = str.replace(" ","").replace("\t","");
             TreeNode lastRoot = null;
             lastRoot = buildTree(str);
-            System.out.println("原表达式为:  " + str);
-            System.out.print("后续遍历的结果为:  ");
+            //System.out.println("原表达式为:  " + str);
+            //System.out.print("后续遍历的结果为:  ");
             Experssion init = new Experssion();
             System.out.println(TreeNode.get_context(TreeNode.der(root)));
 //            System.out.println(TreeNode.der(root));

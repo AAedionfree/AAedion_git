@@ -34,6 +34,4 @@ public class Deal {
         return init;
     }
 
-    public static void main(String[] args) {
-    }
 }
