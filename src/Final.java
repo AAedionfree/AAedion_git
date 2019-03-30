@@ -7,7 +7,7 @@ public class Final extends Leaf {
         super(a);
     }
 
-    public Term der(){
+    public Term der() {
         return new Final("0");
     }
 }

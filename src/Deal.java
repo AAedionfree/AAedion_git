@@ -17,7 +17,7 @@ public class Deal {
             //System.out.println("found: " + count + " : " + matcher.start() + " - " + matcher.end());
             if (matcher.start() != 0 && matcher.end() != init.length()) {
                 init = init.substring(0, matcher.start())
-                        + init.substring(matcher.start() + 1, matcher.end()-1)
+                        + init.substring(matcher.start() + 1, matcher.end() - 1)
                         + init.substring(matcher.end(), init.length());
             } else if (matcher.start() == 0 && matcher.end() == init.length()) {
                 init = init.substring(1, init.length() - 1);

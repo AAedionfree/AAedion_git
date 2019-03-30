@@ -18,7 +18,7 @@ class TreeNode {
         right = null;
     }
 
-    public TreeNode(TreeNode left,String op,TreeNode right) {
+    public TreeNode(TreeNode left, String op, TreeNode right) {
         data = new Operation(op);
         this.left = left;
         this.right = right;
@@ -29,6 +29,7 @@ class TreeNode {
         left = null;
         right = null;
     }
+
     static TreeNode der(TreeNode current) {
 //        String result = null;
 //        if (current != null) {
@@ -52,16 +53,16 @@ class TreeNode {
 //            return result;
 //        }
         TreeNode result = new TreeNode();
-        if(current!=null){
-            if(current.data.isleaf == 0){
+        if (current != null) {
+            if (current.data.isleaf == 0) {
                 String op = current.data.str;
-                if(op.equals("+")||op.equals("-")){
+                if (op.equals("+") || op.equals("-")) {
                     result = new TreeNode(
                             TreeNode.der(current.left),
                             op,
                             TreeNode.der(current.right)
                     );
-                }else if(op.equals("*")){
+                } else if (op.equals("*")) {
                     TreeNode left = new TreeNode(
                             TreeNode.der(current.left),
                             op,
@@ -72,22 +73,22 @@ class TreeNode {
                             op,
                             TreeNode.der(current.right)
                     );
-                    result = new TreeNode(left,"+",right);
-                }else if(op.equals(" qt ")){
+                    result = new TreeNode(left, "+", right);
+                } else if (op.equals(" qt ")) {
                     result = new TreeNode(
-                      new TreeNode(TreeNode.der(current.left)," qt ",current.right),
-                      "*",
-                      TreeNode.der(current.right)
+                            new TreeNode(TreeNode.der(current.left), " qt ", current.right),
+                            "*",
+                            TreeNode.der(current.right)
                     );
-                }else if(op.equals("^")){
+                } else if (op.equals("^")) {
                     result = new TreeNode(
-                            new TreeNode(new TreeNode(current.left,"^",new TreeNode(new Final(new BigInteger(current.right.data.str).subtract(new BigInteger("1")).toString()))),
-                                    "*",TreeNode.der(current.left)),
+                            new TreeNode(new TreeNode(current.left, "^", new TreeNode(new Final(new BigInteger(current.right.data.str).subtract(new BigInteger("1")).toString()))),
+                                    "*", TreeNode.der(current.left)),
                             "*",
                             current.right
                     );
                 }
-            }else{
+            } else {
                 return new TreeNode(current.data.der());
             }
             return result;
@@ -98,13 +99,13 @@ class TreeNode {
     private static String postOrder(TreeNode currNode) {
         if (currNode != null) {
             String temp = "";
-                temp = temp + "(";
+            temp = temp + "(";
             temp = temp + postOrder(currNode.left);
-            if(!currNode.data.str.equals(" qt ")){
+            if (!currNode.data.str.equals(" qt ")) {
                 temp = temp + currNode.data.str;
             }
             temp = temp + postOrder(currNode.right);
-                temp = temp + ")";
+            temp = temp + ")";
             return temp;
         }
         return "";
@@ -149,7 +150,7 @@ Experssion {
                          * 抛出异常   括号不比配
                          */
                         System.out.print("WRONG FORMAT!");
-                        System.exit(-1);
+                        System.exit(0);
                     }
 
                 }
@@ -194,10 +195,12 @@ Experssion {
                         expre[i] != 'i' && expre[i] != 'n' &&
                         expre[i] != 'c' && expre[i] != 'o' && expre[i] != 'x') {
                     System.out.print("WRONG FORMAT!");
+                    System.exit(0);
                 }
             }
             if (stack.length() != 0) {
                 System.out.print("WRONG FORMAT!");
+                System.exit(0);
             }
             int separator = 0;
             if (index != -1) {             //说明表达式的最后运算的为加法或减法
@@ -242,7 +245,8 @@ Experssion {
         }
         return newNode;
     }
-    private void checkstr(String str){
+
+    private void checkstr(String str) {
         Pattern illSpace = Pattern.compile("\\f|\\v|"
                 + "\\d\\s+\\d|"
                 + "s\\s+i|i\\s+n|"
@@ -260,12 +264,12 @@ Experssion {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        try{
+        try {
             Scanner in = new Scanner(System.in);
             String str = in.nextLine();
-            str = str.replace(" ","").replace("\t","");
-            while(str.charAt(0)=='('&&str.charAt(str.length()-1)==')'){
-                str = str.substring(1,str.length()-1);
+            str = str.replace(" ", "").replace("\t", "");
+            while (str.charAt(0) == '(' && str.charAt(str.length() - 1) == ')') {
+                str = str.substring(1, str.length() - 1);
             }
             new Experssion().checkstr(str);
             TreeNode lastRoot = null;
@@ -275,8 +279,7 @@ Experssion {
             Experssion init = new Experssion();
             Deal.deal(TreeNode.get_context(TreeNode.der(root)));
 //            System.out.println(TreeNode.der(root));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.print("WRONG FORMAT!");
         }
     }
