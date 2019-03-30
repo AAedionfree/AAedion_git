@@ -4,6 +4,8 @@ import sun.reflect.generics.tree.Tree;
 
 import java.math.BigInteger;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 class TreeNode {
@@ -112,6 +114,7 @@ class TreeNode {
         String deal = "";
         deal = deal + currNode.postOrder(currNode);
         deal = deal.replace("(si)", "sin");
+        deal = deal.replace("(-1*si)", "-1*sin");
         deal = deal.replace("(co)", "cos");
         return deal;
     }
@@ -239,7 +242,21 @@ Experssion {
         }
         return newNode;
     }
+    private void checkstr(String str){
+        Pattern illSpace = Pattern.compile("\\f|\\v|"
+                + "\\d\\s+\\d|"
+                + "s\\s+i|i\\s+n|"
+                + "c\\s+o+i|o\\s+s|"
+                + "[+-][+-][+-]\\s+\\d|"
+                + "^\\s+$");
 
+        Matcher spaceMatch = illSpace.matcher(str);
+
+        if (spaceMatch.find()) {
+            System.out.println("WRONG FORMAT!");
+            System.exit(0);
+        }
+    }
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -247,12 +264,16 @@ Experssion {
             Scanner in = new Scanner(System.in);
             String str = in.nextLine();
             str = str.replace(" ","").replace("\t","");
+            while(str.charAt(0)=='('&&str.charAt(str.length()-1)==')'){
+                str = str.substring(1,str.length()-1);
+            }
+            new Experssion().checkstr(str);
             TreeNode lastRoot = null;
             lastRoot = buildTree(str);
             //System.out.println("原表达式为:  " + str);
             //System.out.print("后续遍历的结果为:  ");
             Experssion init = new Experssion();
-            System.out.println(TreeNode.get_context(TreeNode.der(root)));
+            Deal.deal(TreeNode.get_context(TreeNode.der(root)));
 //            System.out.println(TreeNode.der(root));
         }
         catch (Exception e){
