@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Elevator extends Thread {
     private int nowfloor = 1;
-    public static int end = 0;
+    private static int end = 0;
     private static HashMap person = new HashMap();
 
     public void run() {
@@ -36,19 +36,25 @@ public class Elevator extends Thread {
         }
     }
 
+    public static void setend()
+    {
+        Elevator.end = 1;
+    }
+
     private int getNowfloor() {
         return nowfloor;
     }
 
     private void elevatorbegin(PersonRequest now) {
         int from = now.getFromFloor();
-        int to = now.getToFloor();
         int id = now.getPersonId();
         int movefloor = this.nowfloor - from;
         movefloor(this.nowfloor, from);
         open(this.nowfloor);
         enter(id, this.nowfloor);
         close(this.nowfloor);
+
+        int to = now.getToFloor();
         movefloor(this.nowfloor, to);
         open(this.nowfloor);
         out(id, this.nowfloor);

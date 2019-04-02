@@ -7,13 +7,16 @@ import java.util.Queue;
 
 public class RequestQueue {
     private static Queue<PersonRequest> queue = new LinkedList<PersonRequest>();
-    public synchronized static PersonRequest poll(){
+
+    public static synchronized PersonRequest poll() {
         return queue.poll();
     }
-    public synchronized static PersonRequest peek(){
+
+    public static synchronized PersonRequest peek() {
         return queue.peek();
     }
-    public synchronized static void offer(PersonRequest e){
+
+    public static synchronized void offer(PersonRequest e) {
         queue.offer(e);
     }
 }
