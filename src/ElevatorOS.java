@@ -1,13 +1,13 @@
 package oofiveone;
 
-public class ElevatorOS {
+public class ElevatorOs {
     private int id = 1;
     private Elevator elevator;
     private Dispatching dispatching;
     private Object lock = new Object();
     private RequestQueue queue;
 
-    public ElevatorOS(int id) {
+    public ElevatorOs(int id) {
         this.id = id;
         this.queue = new RequestQueue();
         this.elevator = new Elevator(lock);

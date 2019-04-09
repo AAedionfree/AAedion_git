@@ -9,12 +9,12 @@ public class Generalcontrol extends Thread
 {
 
     private int maxnumber = 1;
-    private ElevatorOS[] allelevator = new ElevatorOS[maxnumber];
+    private ElevatorOs[] allelevator = new ElevatorOs[maxnumber];
 
     public Generalcontrol(int num) {
         int i;
         for (i = 0; i < num; i++) {
-            allelevator[i] = new ElevatorOS(i + 1);
+            allelevator[i] = new ElevatorOs(i + 1);
             allelevator[i].begin();
         }
     }
@@ -30,7 +30,7 @@ public class Generalcontrol extends Thread
 
     private void input() throws IOException {
         ElevatorInput elevatorInput = new ElevatorInput(System.in);
-        ElevatorOS temp = allelevator[0];
+        ElevatorOs temp = allelevator[0];
         while (true) {
             PersonRequest request = elevatorInput.nextPersonRequest();
             if (temp.getDispatching().getWaiting() == 1) {

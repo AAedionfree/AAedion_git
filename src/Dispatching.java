@@ -122,8 +122,7 @@ public class Dispatching extends Thread {
                         return;
                     }
                 }
-                mainrequest = inputqueue.get(0);
-                inputqueue.remove(0);
+                mainrequest = mininput(inputqueue, nowfloor);
                 for (i = nowfloor; i != mainrequest.getFromFloor(); i =
                         elevator.moveonefloor(i, mainrequest.getFromFloor())
                 ) {
@@ -134,8 +133,7 @@ public class Dispatching extends Thread {
                 in[0] = mainrequest;
                 goalfloor = mainrequest.getToFloor();
             } else {
-                mainrequest = dealqueue.get(0);
-                dealqueue.remove(0);
+                mainrequest = mininput(dealqueue, nowfloor);
                 goalfloor = mainrequest.getToFloor();
             }
         } else {
@@ -145,5 +143,21 @@ public class Dispatching extends Thread {
                 mainrequest = null;
             }
         }
+    }
+
+    private PersonRequest mininput(RequestQueue inputqueue, int now) {
+        int i;
+        int temp = 9999;
+        int goal = 0;
+        PersonRequest request = null;
+        for (i = 0; i < inputqueue.size(); i++) {
+            if (temp > Math.abs(now - inputqueue.get(i).getFromFloor())) {
+                temp = Math.abs(now - inputqueue.get(i).getFromFloor());
+                request = inputqueue.get(i);
+                goal = i;
+            }
+        }
+        inputqueue.remove(goal);
+        return request;
     }
 }
