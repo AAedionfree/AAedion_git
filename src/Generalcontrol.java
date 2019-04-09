@@ -38,15 +38,18 @@ public class Generalcontrol extends Thread {
                         elevatorInput.close();
                         return;
                     }
+                    allelevator[0].getQueue().add(request);
                     lock.notify();
                 }
             }
+            else{
                 if (request == null) {
                     temp.getDispatching().setEnd();
                     elevatorInput.close();
                     return;
                 }
-            allelevator[0].getQueue().add(request);
+                allelevator[0].getQueue().add(request);
+            }
             //System.out.println(request);
         }
     }
