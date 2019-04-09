@@ -22,6 +22,7 @@ public class Dispatching extends Thread {
         this.inputqueue = queue;
         this.elevator = elevator;
         this.lock = lock;
+        this.nin = 0;
     }
 
     public void run() {
