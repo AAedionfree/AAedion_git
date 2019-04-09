@@ -52,16 +52,17 @@ public class Dispatching extends Thread {
                     }
                     mainrequest = inputqueue.get(0);
                     inputqueue.remove(0);
+                    for (i = nowfloor; i != mainrequest.getFromFloor(); i = elevator.moveonefloor(i, mainrequest.getFromFloor()));
+                    nowfloor = mainrequest.getFromFloor();
+                    nin = 1;
+                    in[0] = mainrequest;
+                    goalfloor = mainrequest.getToFloor();
                 }
                 else{
                     mainrequest = dealqueue.get(0);
                     dealqueue.remove(0);
+                    goalfloor = mainrequest.getToFloor();
                 }
-                for (i = nowfloor; i != mainrequest.getFromFloor(); i = elevator.moveonefloor(i, mainrequest.getFromFloor()));
-                nowfloor = mainrequest.getFromFloor();
-                nin = 1;
-                in[0] = mainrequest;
-                goalfloor = mainrequest.getToFloor();
             }
             else {
                 if (mainrequest.getToFloor() == nowfloor) {
