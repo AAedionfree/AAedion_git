@@ -37,6 +37,9 @@ public class Elevator{
             return now;
         }
         nowfloor = now + change;
+        if(nowfloor == 0){
+            nowfloor+=change;
+        }
         try{
             Thread.sleep(400);
         }catch(Exception e){}
@@ -72,7 +75,7 @@ public class Elevator{
     }
 
     public void arrive(int floor) {
-        TimableOutput.println(String.format("ARRIVE-%d", -floor));
+        TimableOutput.println(String.format("ARRIVE-%d", floor));
     }
 
     public int getWaiting() {

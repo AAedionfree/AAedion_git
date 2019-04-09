@@ -31,7 +31,7 @@ public class Dispatching extends Thread {
             if (mainrequest == null) {
                 if(dealqueue.get(0) == null){
                     if (inputqueue.get(0) == null) {
-                        //System.out.println("waiting input");
+                        //System.out.println("waiting input NOW"+nowfloor);
                         synchronized (this.lock) {
                             try {
                                 if (inputqueue.get(0) == null) {
@@ -54,7 +54,7 @@ public class Dispatching extends Thread {
                     mainrequest = dealqueue.get(0);
                     dealqueue.remove(0);
                 }
-                for (i = nowfloor; i < mainrequest.getFromFloor(); i = elevator.moveonefloor(i, mainrequest.getFromFloor()));
+                for (i = nowfloor; i != mainrequest.getFromFloor(); i = elevator.moveonefloor(i, mainrequest.getFromFloor()));
                 nowfloor = mainrequest.getFromFloor();
                 nin = 1;
                 in[0] = mainrequest;
@@ -96,7 +96,7 @@ public class Dispatching extends Thread {
                 elevator.close(nowfloor);
             }
             nowfloor = elevator.moveonefloor(nowfloor, goalfloor);
-            //System.out.println("move one");
+            //System.out.println(nowfloor);
         }
     }
 
