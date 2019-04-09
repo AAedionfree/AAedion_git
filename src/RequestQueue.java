@@ -3,29 +3,31 @@ package oofiveone;
 import com.oocourse.elevator2.PersonRequest;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class RequestQueue {
     private ArrayList<PersonRequest> queue = new ArrayList<PersonRequest>();
 
-    public synchronized void add(PersonRequest e){
+    public synchronized void add(PersonRequest e) {
         queue.add(e);
     }
-    public synchronized PersonRequest get(int i){
-        try{
+
+    public synchronized PersonRequest get(int i) {
+        try {
             return queue.get(i);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
-    public synchronized int size(){
+
+    public synchronized int size() {
         return queue.size();
     }
-    public synchronized void remove(int i){
+
+    public synchronized void remove(int i) {
         queue.remove(i);
     }
-    public synchronized void remove(Object i){
+
+    public synchronized void remove(Object i) {
         queue.remove(i);
     }
 }

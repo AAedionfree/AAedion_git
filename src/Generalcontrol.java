@@ -5,8 +5,9 @@ import com.oocourse.elevator2.PersonRequest;
 
 import java.io.IOException;
 
+public class Generalcontrol extends Thread
+{
 
-public class Generalcontrol extends Thread {
     private int maxnumber = 1;
     private ElevatorOS[] allelevator = new ElevatorOS[maxnumber];
 
@@ -19,15 +20,18 @@ public class Generalcontrol extends Thread {
     }
 
     public void run() {
-        try{
+        try {
             input();
-        }catch (IOException e){}
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    private void input() throws IOException{
+    private void input() throws IOException {
         ElevatorInput elevatorInput = new ElevatorInput(System.in);
         ElevatorOS temp = allelevator[0];
-            while (true) {
+        while (true) {
             PersonRequest request = elevatorInput.nextPersonRequest();
             if (temp.getDispatching().getWaiting() == 1) {
                 Object lock = allelevator[0].getlock();
@@ -41,8 +45,7 @@ public class Generalcontrol extends Thread {
                     allelevator[0].getQueue().add(request);
                     lock.notify();
                 }
-            }
-            else{
+            } else {
                 if (request == null) {
                     temp.getDispatching().setEnd();
                     elevatorInput.close();
@@ -51,6 +54,8 @@ public class Generalcontrol extends Thread {
                 allelevator[0].getQueue().add(request);
             }
             //System.out.println(request);
+            //TimableOutput.println
+            // (String.format("----%d", request.getPersonId()));
         }
     }
 }

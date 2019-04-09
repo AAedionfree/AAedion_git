@@ -25,9 +25,11 @@ public class ElevatorOS {
     public Elevator getElevator() {
         return elevator;
     }
-    public Dispatching getDispatching(){
+
+    public Dispatching getDispatching() {
         return dispatching;
     }
+
     public void begin() {
         this.dispatching.start();
     }
