@@ -41,6 +41,11 @@ public class Generalcontrol extends Thread {
                     lock.notify();
                 }
             }
+                if (request == null) {
+                    temp.getDispatching().setEnd();
+                    elevatorInput.close();
+                    return;
+                }
             allelevator[0].getQueue().add(request);
             //System.out.println(request);
         }

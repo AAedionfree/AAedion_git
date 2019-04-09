@@ -28,6 +28,9 @@ public class Dispatching extends Thread {
         while (true) {
             nout = 0;
             nin = 0;
+            if(mainrequest == null && dealqueue.get(0) == null && inputqueue.get(0) == null && end == 1){
+                return;
+            }
             if (mainrequest == null) {
                 if(dealqueue.get(0) == null){
                     if (inputqueue.get(0) == null) {
@@ -43,7 +46,7 @@ public class Dispatching extends Thread {
                                 e.printStackTrace();
                             }
                         }
-                        if(end == 1){
+                        if(mainrequest == null && dealqueue.get(0) == null && inputqueue.get(0) == null && end == 1){
                             return;
                         }
                     }
