@@ -28,11 +28,11 @@ public class Dispatching extends Thread {
         while (true) {
             nout = 0;
             nin = 0;
-            if(mainrequest == null && dealqueue.get(0) == null && inputqueue.get(0) == null && end == 1){
+            if (mainrequest == null && dealqueue.get(0) == null && inputqueue.get(0) == null && end == 1) {
                 return;
             }
             if (mainrequest == null) {
-                if(dealqueue.get(0) == null){
+                if (dealqueue.get(0) == null) {
                     if (inputqueue.get(0) == null) {
                         //System.out.println("waiting input NOW"+nowfloor);
                         synchronized (this.lock) {
@@ -47,25 +47,24 @@ public class Dispatching extends Thread {
                                 e.printStackTrace();
                             }
                         }
-                        if(mainrequest == null && dealqueue.get(0) == null && inputqueue.get(0) == null && end == 1){
+                        if (mainrequest == null && dealqueue.get(0) == null && inputqueue.get(0) == null && end == 1) {
                             return;
                         }
                     }
                     mainrequest = inputqueue.get(0);
                     inputqueue.remove(0);
-                    for (i = nowfloor; i != mainrequest.getFromFloor(); i = elevator.moveonefloor(i, mainrequest.getFromFloor()));
+                    for (i = nowfloor; i != mainrequest.getFromFloor(); i = elevator.moveonefloor(i, mainrequest.getFromFloor()))
+                        ;
                     nowfloor = mainrequest.getFromFloor();
                     nin = 1;
                     in[0] = mainrequest;
                     goalfloor = mainrequest.getToFloor();
-                }
-                else{
+                } else {
                     mainrequest = dealqueue.get(0);
                     dealqueue.remove(0);
                     goalfloor = mainrequest.getToFloor();
                 }
-            }
-            else {
+            } else {
                 if (mainrequest.getToFloor() == nowfloor) {
                     nout = 1;
                     out[0] = mainrequest;
@@ -83,7 +82,9 @@ public class Dispatching extends Thread {
             }
             for (i = 0; i < inputqueue.size(); i++) {
                 PersonRequest temp = inputqueue.get(i);
-                if (nowfloor == temp.getFromFloor()) {
+                if (nowfloor == temp.getFromFloor() &&
+                        ((goalfloor > nowfloor && temp.getToFloor() > nowfloor) ||
+                                (goalfloor < nowfloor && temp.getToFloor() < nowfloor))) {
                     in[nin] = temp;
                     nin++;
                     dealqueue.add(temp);
@@ -92,6 +93,25 @@ public class Dispatching extends Thread {
             }
             if (nout != 0 || nin != 0) {
                 elevator.open(nowfloor);
+                for (i = 0; i < dealqueue.size(); i++) {
+                    PersonRequest temp = dealqueue.get(i);
+                    if (nowfloor == temp.getToFloor()) {
+                        out[nout] = temp;
+                        nout++;
+                        dealqueue.remove(i);
+                    }
+                }
+                for (i = 0; i < inputqueue.size(); i++) {
+                    PersonRequest temp = inputqueue.get(i);
+                    if (nowfloor == temp.getFromFloor() &&
+                            ((goalfloor > nowfloor && temp.getToFloor() > nowfloor) ||
+                                    (goalfloor < nowfloor && temp.getToFloor() < nowfloor))) {
+                        in[nin] = temp;
+                        nin++;
+                        dealqueue.add(temp);
+                        inputqueue.remove(i);
+                    }
+                }
                 for (i = 0; i < nout; i++) {
                     elevator.out(out[i].getPersonId(), nowfloor);
                 }
@@ -105,9 +125,10 @@ public class Dispatching extends Thread {
         }
     }
 
-    public void setEnd(){
+    public void setEnd() {
         this.end = 1;
     }
+
     public int getWaiting() {
         return waiting;
     }
