@@ -41,6 +41,7 @@ public class Dispatching extends Thread {
                                     waiting = 1;
                                     lock.wait();
                                     waiting = 0;
+                                    Thread.sleep(10);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
