@@ -37,13 +37,14 @@ public class Dispatching extends Thread {
                                 if (inputqueue.get(0) == null) {
                                     waiting = 1;
                                     lock.wait();
+                                    waiting = 0;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                         if(end == 1){
-                            break;
+                            return;
                         }
                     }
                     mainrequest = inputqueue.get(0);
@@ -88,12 +89,9 @@ public class Dispatching extends Thread {
                 elevator.open(nowfloor);
                 for (i = 0; i < nout; i++) {
                     elevator.out(out[i].getPersonId(), nowfloor);
-                    dealqueue.remove(out[i]);
-                    i++;
                 }
                 for (i = 0; i < nin; i++) {
                     elevator.enter(in[i].getPersonId(), nowfloor);
-                    dealqueue.add(in[i]);
                 }
                 elevator.close(nowfloor);
             }
