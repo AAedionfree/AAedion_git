@@ -1,22 +1,31 @@
-package oofive;
+package oofiveone;
 
-import com.oocourse.elevator1.PersonRequest;
+import com.oocourse.elevator2.PersonRequest;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class RequestQueue {
-    private static Queue<PersonRequest> queue = new LinkedList<PersonRequest>();
+    private ArrayList<PersonRequest> queue = new ArrayList<PersonRequest>();
 
-    public static synchronized PersonRequest poll() {
-        return queue.poll();
+    public synchronized void add(PersonRequest e){
+        queue.add(e);
     }
-
-    public static synchronized PersonRequest peek() {
-        return queue.peek();
+    public synchronized PersonRequest get(int i){
+        try{
+            return queue.get(i);
+        }catch (Exception e){
+            return null;
+        }
     }
-
-    public static synchronized void offer(PersonRequest e) {
-        queue.offer(e);
+    public synchronized int size(){
+        return queue.size();
+    }
+    public synchronized void remove(int i){
+        queue.remove(i);
+    }
+    public synchronized void remove(Object i){
+        queue.remove(i);
     }
 }
