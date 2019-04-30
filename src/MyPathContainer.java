@@ -11,12 +11,13 @@ public class MyPathContainer implements com.oocourse.specs1.models.PathContainer
     private ArrayList<Path> pathlist;
     private HashMap<Path, Integer> pathToInteger;
     private HashMap<Integer, Path> integerToPath;
+    private HashMap allnode = new HashMap();
     private static int num = 0;
 
     public MyPathContainer() {
         this.pathlist = new ArrayList<>();
-        this.pathToInteger = new HashMap<>();
-        this.integerToPath = new HashMap<>();
+        this.pathToInteger = new HashMap<Path, Integer>();
+        this.integerToPath = new HashMap<Integer, Path>();
     }
 
     @Override
@@ -52,24 +53,50 @@ public class MyPathContainer implements com.oocourse.specs1.models.PathContainer
 
     @Override
     public int addPath(Path path) {
-        num++;
-        pathToInteger.put(path, num);
-        integerToPath.put(num, path);
+        if (path != null && path.isValid() == true) {
+            if(!containsPath(path)){
+                num++;
+                pathToInteger.put(path, num);
+                integerToPath.put(num, path);
+                for (Integer integer : path) {
+                    if (allnode.get(integer) == null) {
+                        allnode.put(integer, 1);
+                    }
+                }
+                return num;
+            }else{
+                return pathToInteger.get(path);
+            }
+        } else if (path == null || path.isValid() == false) {
+            return 0;
+        }
         return 0;
     }
 
     @Override
     public int removePath(Path path) throws PathNotFoundException {
+        if (containsPath(path) == true && path != null && path.isValid() == true) {
+            int id = pathToInteger.remove(path);
+            integerToPath.remove(id);
+            return id;
+        } else if (path == null || path.isValid() == false || containsPath(path) == false) {
+            throw new PathNotFoundException(path);
+        }
         return 0;
     }
 
     @Override
     public void removePathById(int pathId) throws PathIdNotFoundException {
-
+        if (containsPathId(pathId) == true) {
+            Path temp = integerToPath.remove(pathId);
+            pathToInteger.remove(temp);
+        } else {
+            throw new PathIdNotFoundException(pathId);
+        }
     }
 
     @Override
     public int getDistinctNodeCount() {
-        return 0;
+        return allnode.size();
     }
 }

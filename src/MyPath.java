@@ -8,15 +8,16 @@ import java.util.Iterator;
 
 public class MyPath implements Path {
     private ArrayList<Integer> nodes = new ArrayList<Integer>();
+    private HashMap nodehash = new HashMap();
     private int id;
     private static int count = 0;
+    private int num = 0;
 
     public MyPath(int... nodeList) {
         int i;
-        MyPath.count++;
-        this.id = count;
         for (i = 0; i < nodeList.length; i++) {
-            nodes.add(new Integer(nodeList[i]));
+            nodes.add(nodeList[i]);
+            nodehash.put(nodeList[i], 1);
         }
     }
 
@@ -43,16 +44,7 @@ public class MyPath implements Path {
 
     @Override
     public int getDistinctNodeCount() {
-        int i = 0;
-        int len = 0;
-        HashMap map = new HashMap();
-        for (i = 0; i < nodes.size(); i++) {
-            if (map.get(nodes.get(i)) != null) {
-                map.put(nodes.get(i), 1);
-                len++;
-            }
-        }
-        return len;
+        return nodehash.size();
     }
 
     @Override
@@ -65,7 +57,13 @@ public class MyPath implements Path {
 
     @Override
     public int compareTo(Path o) {
-        return 0;
+        int i = 0;
+        for (i = 0; i < Integer.min(o.size(), this.nodes.size()); i++) {
+            if (o.getNode(i) != this.nodes.get(i)) {
+                return Integer.compare(this.nodes.get(i), o.getNode(i));
+            }
+        }
+        return Integer.compare(this.nodes.size(), o.size());
     }
 
     @Override
@@ -77,11 +75,11 @@ public class MyPath implements Path {
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof Path) {
             int i;
-            if (((MyPath) obj).getNodes().size() != nodes.size()) {
+            if (((Path) obj).size() != nodes.size()) {
                 return false;
             }
             for (i = 0; i < nodes.size(); i++) {
-                if (nodes.get(i) != ((MyPath) obj).getNodes().get(i)) {
+                if (nodes.get(i) != ((Path) obj).getNode(i)) {
                     return false;
                 }
             }
@@ -96,7 +94,20 @@ public class MyPath implements Path {
         return nodes;
     }
 
-    private int getId(){
+    private int getId() {
         return id;
+    }
+
+    public int hashCode() {
+        int result = 0;
+        int i = 0;
+        for (i = 0; i < nodes.size(); i++) {
+            if (i != 0) {
+                result = 31 * result + nodes.get(i);
+            } else {
+                result = nodes.get(i);
+            }
+        }
+        return result;
     }
 }
